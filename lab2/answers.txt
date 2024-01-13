@@ -1,0 +1,98 @@
+/******************************************************************************
+** Lab 2: Autocomplete
+******************************************************************************/
+
+Group members:
+- [Zakariya Omar]
+- [Mirco Ghadri]
+- [Yahye Addo]
+
+/******************************************************************************
+** 1. Describe how your firstIndexOf() method in RangeBinarySearch.java
+**    finds the first index of a key that equals the search key.
+******************************************************************************/
+
+[Optimal Version]
+It performs a regular binary search. Once it finds the search key, instead of stopping and returning the index of the key as a regular binary search would,
+it checks to the index left of the key(if such an index exists, that is if the key is not in index 0). If the index left of the search key also contains the search key,
+then it changes the high value to equal that index. It then continues the binary search with the new high value.
+Once it reaches a search key with no search key to the left of it, it returns the index of the search key. And that index has to be the first index of when
+the search key appears in the array.
+
+[SubOptimal Version]
+[By implementing a binary search that doesn't stop once it finds a match to the key
+ instead it saves the match and restricts the search to the left hand half of the
+ array and continues searching. Continuing as such until there's nothing left to
+ search and returns the last match which is the first element. Restricts to right
+ hand half for last element. The solution is based on the notion that the first
+ element if not already it, should be to the left of the mid-match.]
+
+
+
+/******************************************************************************
+** 2. State and justify the asymptotic complexity of the operations
+**    in the Autocomplete class in the dictionary size n.
+**    For all Matches and numberOfMatches, the asymptotic complexity
+**    should also depend on the matching terms m.
+**
+**    You may take the number of comparisons as a proxy for the runtime.
+******************************************************************************/
+
+sortDictionary: O(N log N)
+
+The Arrays.sort() function uses the mergesort algorithm according to the official documentation. The worst case running times of the mergesort
+algorithm is proportional to N log N
+
+numberOfMatches: O(log N)
+
+Number of matches uses the RangeBinarySearch.firstIndexOf() and RangeBinarySearch.lastIndexOf() to find the number of matches.
+The worst-time complexity of binary search is O(log N). This gives us O(2 log N) but since we ignore constant factors, this becomes O(log N).
+
+allMatches: O(log N + M log M)
+
+The worst case running time of the binary search which takes place is proportional to log N. The complexity of copying the M matches to the new array is O(M).
+The complexity of sorting the M matches in reverse-weight order is O(M log M) because it uses Arrays.sort() which uses mergeSort algorithm. This would give us a total
+complexity of O(log N + 2M log M) but since constant factors are ignored, we write it as O(log N + M log M).
+
+
+/******************************************************************************
+** Appendix: General information
+**
+** A. Approximately how many hours did you spend on the assignment?
+******************************************************************************/
+
+Zakariya Omar]:  [7 hours]
+[Mirco Ghadri]:  [8 hours]
+[Yahye Addo]:  [8 hours]
+
+/******************************************************************************
+** B. Are there any known bugs / limitations?
+******************************************************************************/
+
+No.
+
+/******************************************************************************
+** C. Did you collaborate with any other students on this lab?
+**    If so, please write in what way you collaborated and with whom.
+**    Also include any resources (including the web) that you may
+**    may have used in creating your design.
+******************************************************************************/
+
+No.
+
+/******************************************************************************
+** D. Describe any serious problems you encountered.                    
+******************************************************************************/
+
+Problem with RangeBinarySearch, more specifically the Comparator.compare() function. I assumed that the Comparator.compare(term1,term2) function will return -1 if term1 is
+lexicographically less than term2 and 1 if term1 is lexicographically greater than term2. Therefore my if and else-if statements used the condition "==-1" and "==1"
+which was wrong. The compare(term1,term2) function returns a number less than 0 if term1 is less than term2 (could be -1 or less) and a number greater than 0 if term1
+is greater than term2 (could be 1 or greater). I had to change my If and Else-if statements to use ">0" and "<0". This took me a while to figure out.
+
+/******************************************************************************
+** E. List any other comments here.
+**    Feel free to provide any feedback on how much you learned 
+**    from doing the assignment, and whether you enjoyed it.                                             
+******************************************************************************/
+
+The assignment was very fun and educative, using a cool real world example and building something real with it in an interactive way.
