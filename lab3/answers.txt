@@ -1,0 +1,141 @@
+/******************************************************************************
+** Lab 3: Plagiarism detection
+******************************************************************************/
+
+Group members:
+- [Zakariya Omar]
+- [Mirco Ghadri]
+- [Yahye Addo]
+
+/******************************************************************************
+** Task 1: Analyzing the slow program
+**
+** 1. What is the asymptotic complexity of findSimilarity?
+**    Answer in terms of N, the total number of 5-grams in the input files.
+**    Assume that the number of duplicate occurrences of 5-grams is
+**    a small constant - that is, there is not much plagiarised text.
+**    Explain briefly.
+******************************************************************************/
+
+A: O(N^2)
+
+Break the problem down into 2 parts, D and K, where D is the number of documents and K is the average number of 5-grams per document.
+We have that N = D*K.
+Each document is compared with all other documents in the for loop. This gives us D*(D-1) comparisons.
+Each 5-gram in each document is compared to all other 5 grams in the other document. This gives us K*K comparisons.
+In total this becomes D*(D-1)*K*K = D*K*(D-1)*K which in asymptotic notation gives O(N*N) = O(N^2).
+
+/******************************************************************************
+** 2. How long did the program take on the 'small' and 'medium' directories?
+**    Is the ratio between the times what you would expect,
+**    given the asymptotic complexity? Explain very briefly why.
+******************************************************************************/
+
+We are given that the small directory contains (N = 20,000) and the medium directory (N = 200,000).
+This means that the medium directory has 10 times more 5-grams than the small directory.
+If we translate that to asymptotic notation, this means that the program will take 10^2+10=100 times longer
+to run on the medium directory than on the small directory.
+
+The time it took for the program to run on the 2 directories is as follows:
+
+small: 2.09 seconds
+medium: 318.45 seconds
+
+The ratio between the 2 times is 318/2 = 159 which is a bit higher than what we expect. We expect the ratio to be 100. So we expect that the program should take
+approximately only 200 seconds on the medium directory, instead of 318 seconds.
+
+
+/******************************************************************************
+** 3. How long do you predict the program would take to run on
+**    the 'huge' directory? Show your calculations.
+******************************************************************************/
+
+The huge directory has (N = 4,000,000). This means that it is 20 times larger than the medium directory. This gives us 20^2=400 times longer
+time to run than the medium directory.
+This becomes 318.45 * 400 = 127380 seconds, which is approximately 354 hours.
+
+/******************************************************************************
+** Task 2: Using an index
+**
+** 4. Which of the three BSTs in the program usually become unbalanced?
+**    Say very briefly how you deduced this.
+******************************************************************************/
+
+The files BST becomes unbalanced because its size is the same as its height.
+The index and similarity BST also become unbalanced because their height is too large compared to their size.
+A balanced tree has a height of approximately log2(size), the height of index and similarity BST is more than this.
+
+/******************************************************************************
+** 5 (optional). Is there a simple way to stop these trees becoming unbalanced?
+******************************************************************************/
+
+To shuffle the N-grams array so that the order of N-grams is random. This way, the buildIndex() method will build a
+balanced array.
+
+/******************************************************************************
+** Task 3: Using scapegoat trees instead of BSTs
+**
+** 6. What are the asymptotic complexities of buildIndex and findSimilarity?
+**    Include brief justification. Again, assume a total of N 5-grams,
+**    and a constant number of duplicate occurrences of 5-grams.
+******************************************************************************/
+
+The asymptotic complexity of buildIndex is O(N log N) because there are N 5-grams and putting each 5-Gram into the index BST
+takes Log N time because that is the depth of the balanced Index BST.
+
+The asymptotic complexity of findSimilarity is O(N log N) because are are N 5-grams and for each 5 gram in the Index, it puts the paths of that 5-gram
+to the similarity BST. The put operation costs Log N.
+
+/******************************************************************************
+** 7 (optional). What if the total similarity score is an arbitrary number S,
+**               rather than a small constant?
+**               Express the asymptotic complexity in terms of both N and S.
+******************************************************************************/
+
+The asymptotic complexity of findSimilarity(), if the total similarity score is an arbitrary constant, is O(S*Log S) since
+we will perform the put() operation S times and each put operation costs at most Log S.
+
+/******************************************************************************
+** Appendix: General information
+**
+** A. Approximately how many hours did you spend on the assignment?
+******************************************************************************/
+
+[Zakariya Omar]:  [8]
+[Mirco Ghadri]:  [9]
+[Yahye Addo]:  [8]
+
+/******************************************************************************
+** B. Are there any known bugs / limitations?
+******************************************************************************/
+
+No, we ran it with -ea (Enable assertions) and did not get any errors.
+
+/******************************************************************************
+** C. Did you collaborate with any other students on this lab?
+**    If so, please write in what way you collaborated and with whom.
+**    Also include any resources (including the web) that you may
+**    may have used in creating your design.
+******************************************************************************/
+
+Collaboration: NO
+Resources used: https://chalmersgu-data-structure-courses.github.io/OpenDSA/Published/ChalmersGU-DSABook/html
+The main course book was used A LOT during this lab, explaining binary search trees and how they work etc.
+Without the course book, we would not have been able to complete this lab. The visualizations in the course book helped a lot.
+
+/******************************************************************************
+** D. Describe any serious problems you encountered.                    
+******************************************************************************/
+
+-The scapegoat tree implementation. At first It did not work. The problem was a bug in the put method.
+We wrote rebuild(node) thinking that it would rebuild the node. However, upon reading the documentation of the method rebuild(), we realized
+that it returns a node. So we had to do node = rebuild(node) and reassign the node to the return value of the function call. This was not obvious at first.
+
+/******************************************************************************
+** E. List any other comments here.
+**    Feel free to provide any feedback on how much you learned 
+**    from doing the assignment, and whether you enjoyed it.                                             
+******************************************************************************/
+
+Enjoyed the assignment a lot. The course book explained the topics very easily and the animations made it so much more fun and easy to understand
+recursion of binary search trees.
