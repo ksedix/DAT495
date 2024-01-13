@@ -1,0 +1,184 @@
+/******************************************************************************
+** Lab 4: Path finder
+******************************************************************************/
+
+Group members:
+- Mirco Ghadri
+- Zakariya Omar
+- Yahye Addo
+
+/******************************************************************************
+** 1. List the number of loop iterations, minimal cost, and a shortest path
+**    (i.e. a path having minimal cost) for each of the following invocations.
+******************************************************************************/
+
+> java RunPathFinder ucs AdjacencyGraph graphs/AdjacencyGraph/citygraph-SE.txt Lund Kiruna
+
+loop iterations: [5427]
+minimal cost:    [1826]
+shortest path:   [Lund --[16]-> Löddeköpinge --[69]-> Hjärnarp --[52]-> Åled --[6]-> Oskarström --[22]-> ..... --[68]-> Storuman --[71]-> Sorsele --[233]-> Jokkmokk --[93]-> Gällivare --[121]-> Kiruna]
+
+> java RunPathFinder ucs NPuzzle 3 /HFG/BED/C_A/ /ABC/DEF/GH_/
+
+loop iterations: [483540]
+minimal cost:    [31]
+shortest path:   [/HFG/BED/C_A/ -> /HFG/BED/CA_/ -> /HFG/BE_/CAD/ -> /HF_/BEG/CAD/ -> /H_F/BEG/CAD/ -> ..... -> /AEB/D_C/GHF/ -> /A_B/DEC/GHF/ -> /AB_/DEC/GHF/ -> /ABC/DE_/GHF/ -> /ABC/DEF/GH_/]
+
+> java RunPathFinder astar NPuzzle 3 /HFG/BED/C_A/ /ABC/DEF/GH_/
+
+loop iterations: [43620]
+minimal cost:    [31]
+
+> java RunPathFinder ucs NPuzzle 3 /HGF/BED/C_A/ /ABC/DEF/GH_/
+
+loop iterations: [483841]
+minimal cost:    [-]
+shortest path:   [-]
+
+A: No Path Found
+
+> java RunPathFinder ucs GridGraph graphs/GridGraph/AR0011SR.map 23:161 130:211
+
+loop iterations: [159327]
+minimal cost:    [366.4]
+shortest path:   [23:161 -> 23:160 -> 23:159 -> 23:158 -> 23:157 -> ..... -> 132:207 -> 131:208 -> 131:209 -> 130:210 -> 130:211]
+
+> java RunPathFinder astar GridGraph graphs/GridGraph/AR0011SR.map 23:161 130:211
+
+loop iterations: [95160]
+minimal cost:    [366.4]
+
+> java RunPathFinder ucs WordLadder graphs/WordLadder/swedish-saldo.txt syster broder
+
+loop iterations: [135142]
+minimal cost:    [11]
+shortest path:   [syster -> byster -> bysten -> basten -> basken -> ..... -> bauden -> bruden -> bräden -> bräder -> broder]
+
+> java RunPathFinder astar WordLadder graphs/WordLadder/swedish-saldo.txt syster broder
+
+loop iterations: [9827]
+minimal cost:    [11]
+
+/******************************************************************************
+** 2. For each of the three classes GridGraph, WordLadder, and NPuzzle,
+**    what is the approximate improvement factor in the number
+**    of loop iterations by running A* instead of UCS?
+**    Try a number of different examples per class.
+******************************************************************************/
+
+Results from taking average iterations of 3 tries per class (the first try from question 1)
+
+WORDLADDER
+ucs WordLadder graphs/WordLadder/swedish-saldo.txt hallå tjena
+loop iterations: [164917]
+astar WordLadder graphs/WordLadder/swedish-saldo.txt hallå tjena
+loop iterations: [15551]
+
+ucs WordLadder graphs/WordLadder/swedish-saldo.txt testa bästa
+loop iterations: [226]
+astar WordLadder graphs/WordLadder/swedish-saldo.txt testa bästa
+loop iterations: [10]
+
+GRIDGRAPH
+
+ucs GridGraph graphs/GridGraph/AR0011SR.map 40:150 80:161
+loop iterations: [14809]
+astar GridGraph graphs/GridGraph/AR0011SR.map 40:150 80:161
+loop iterations: [1690]
+
+ucs GridGraph graphs/GridGraph/AR0011SR.map 120:43 80:70
+loop iterations: [53730]
+astar GridGraph graphs/GridGraph/AR0011SR.map 120:43 80:70
+loop iterations: [20256]
+
+NPUZZLE
+
+ucs NPuzzle 3 /HFB/GEC/D_A/ /ABC/DEF/GH_/
+loop iterations: [365808]
+astar NPuzzle 3 /HFB/GEC/D_A/ /ABC/DEF/GH_/
+loop iterations: [11040]
+
+ucs NPuzzle 3 /BFH/EGC/_DA/ /ABC/DEF/GH_/
+loop iterations: [150647]
+astar NPuzzle 3 /BFH/EGC/_DA/ /ABC/DEF/GH_/
+loop iterations: [4573]
+
+_____________________________________________________________________________
+GridGraph:  [(1.67+8.76+2.65)/3 = 4.36]
+
+WordLadder: [(13.75+10.6+22.6)/3 = 15.65]
+
+NPuzzle:    [(11.08+33.13+32.94)/3 = 25.71]
+
+/******************************************************************************
+** 3. For which of the three classes GridGraph, WordLadder, and NPuzzle,
+**    did the heuristic guessCost have the most impact?
+**    What do you think is the reason for this?
+******************************************************************************/
+
+[For the NPuzzle. First we need to understand how searchUCS solved NPuzzle. It visits all of the edges and all of the edges have the same cost. This means that
+it tries all possible combinations before it finds the goal.
+However, when using searchAstar, it does not need to try all possible combinations before it finds the goal, because some edges will be favored over others
+because of the guessCost function.]
+
+/******************************************************************************
+** 4. What are the main differences between your implementations
+**    of searchAstar and searchUCS?
+******************************************************************************/
+
+[How the PQEntries are prioritized in the Priority Queue. In searchUCS, they are prioritized based on which node
+has the shortest distance to reach it from the start node. The node which has the shortest distance to reach it from
+the start node is visited first.
+In searchAstar, they are prioritized based on which node has the shortest distance to reach it from the start node + the estimated distance
+from that node to the goal node.]
+
+/******************************************************************************
+** 5. What's the asymptotic average-case complexity of WordLadder.outgoingEdges
+**    in the alphabet size K and the length N of the given word?
+**    Justify briefly.
+******************************************************************************/
+
+[O(KN^2) because the for loop runs N times and each iteration calls w.substring() which takes O(N-1) time.
+And the loop through alphabet with size K for each iteration which runs N*K times.]
+
+/******************************************************************************
+** Appendix: General information
+**
+** A. Approximately how many hours did you spend on the assignment?
+******************************************************************************/
+
+[Mirco Ghadri]:  [6]
+[Zakariya Omar]:  [5]
+[Yahye Addo]:  [5]
+
+/******************************************************************************
+** B. Are there any known bugs / limitations?
+******************************************************************************/
+
+[NO]
+
+/******************************************************************************
+** C. Did you collaborate with any other students on this lab?
+**    If so, please write in what way you collaborated and with whom.
+**    Also include any resources (including the web) that you may
+**    may have used in creating your design.
+******************************************************************************/
+
+[No collaboration. The course book was used https://chalmersgu-data-structure-courses.github.io/OpenDSA/Published/ChalmersGU-DSABook/html/index.html
+and helped a lot. It helped visualize and understand the Dijkstras algorithm as well as understanding how Priority Queue works.]
+
+/******************************************************************************
+** D. Describe any serious problems you encountered.
+******************************************************************************/
+
+[No problems]
+
+/******************************************************************************
+** E. List any other comments here.
+**    Feel free to provide any feedback on how much you learned
+**    from doing the assignment, and whether you enjoyed it.
+******************************************************************************/
+
+[The assignment was very enjoyable and rich in knowledge and experience. It presented many interesting real world problems and applications
+of Java graphs. Not only did it show how graphs can be used to solve distance problems(google maps), it also showed how to use graphs to solve
+wordLadder and NPuzzle. We found the wordLadder game very fun and interactive.]
