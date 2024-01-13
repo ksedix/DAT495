@@ -1,0 +1,119 @@
+/******************************************************************************
+** Lab 1: Sorting, Complexity
+******************************************************************************/
+
+Group members:
+- [Zakariya Omar]
+- [Mirco Ghadri]
+- [Yahye Addo]
+
+/******************************************************************************
+** Task: Figuring out the asymptotic complexity
+**
+** 1. What is the complexity of running each of the following algorithms
+**    on each of the following kinds of inputs?
+******************************************************************************/
+
+Insertion.java on:
+
+- random inputs:      [Quadratic]
+- 95% sorted inputs:  [Quadratic]
+- sorted inputs:      [Linear]
+
+Quick.java on:
+
+- random inputs:      [Linearithmic]
+- 95% sorted inputs:  [Linearithmic]
+- sorted inputs:      [Quadratic]
+
+Merge.java on:
+
+- random inputs:      [Linearithmic]
+- 95% sorted inputs:  [Linearithmic]
+- sorted inputs:      [Linearithmic]
+
+/******************************************************************************
+** Task: Improving quicksort
+**
+** 2. Do the following changes affect the asymptotic complexity of quicksort
+**    on any of the three degrees of sortedness of the input?
+**    If so, what is it that changes?
+******************************************************************************/
+
+Shuffling the array first:
+[Yes] For:
+- sorted inputs:      [Linearithmic]
+
+Median-of-three pivot selection:
+[yes] For:
+- sorted inputs:      [Linearithmic]
+
+Insertion sort for small subarrays:
+[no]
+
+/******************************************************************************
+** 3. What is a good cutoff to use for switching to insertion sort?
+**    Consider only random inputs for this question.
+**    Explain briefly how you came to this answer.
+**    Remember that you should try to find the answer in a systematic way.
+******************************************************************************/
+
+[60]
+     - To land on a first estimate cutoffvalue it was helpful to compare the time
+       for the inital quicksort algorithm and the time for the insertion algorithm.
+       There's a noticable difference, Insertion sort has better time than quicksort
+       on n=10, n=30 and starts to have worse time starting from n=100.
+
+       Which gava us the idea for a suitable cutoffvalue being somewhere between
+       30 and 100. Wanting a cutoffvalue that gives us a compromise of being fast
+       for small arrays while being fast for bigger arrays we choose to try values
+       around 50. After trial and error settling on 60 where going bigger gave us a
+       larger time for smaller arrays while giving us a slight time decrease for larger
+       arrays and going smaller doing the opposite. ±60 becoming the final cutoffvalue.
+
+
+/******************************************************************************
+** 4. Which combination of improvements gives the best performance overall?
+******************************************************************************/
+
+[Shuffle(False), MedianOfThree(True), CutOffValue(10)]
+
+/******************************************************************************
+** Appendix: General information
+**
+** A. Approximately how many hours did you spend on the assignment?
+******************************************************************************/
+
+[Group member Zakariya Omar]:  [ 7 hours, 3 lab sessions]
+[Group member Mirco Ghadri]:  [8 hours, 3 lab sessions]
+[Group member Yahye Addo]:  [8 hours, 3 lab sessions]
+
+
+/******************************************************************************
+** B. Are there any known bugs / limitations?
+******************************************************************************/
+
+[NO]
+
+/******************************************************************************
+** C. Did you collaborate with any other students on this lab?
+**    If so, please write in what way you collaborated and with whom.
+**    Also include any resources (including the web) that you may
+**    may have used in creating your design.
+******************************************************************************/
+
+[NO]
+
+/******************************************************************************
+** D. Describe any serious problems you encountered.                    
+******************************************************************************/
+
+[No Serious Problems]
+
+/******************************************************************************
+** E. List any other comments here.
+**    Feel free to provide any feedback on how much you learned 
+**    from doing the assignment, and whether you enjoyed it.                                             
+******************************************************************************/
+
+[...]
